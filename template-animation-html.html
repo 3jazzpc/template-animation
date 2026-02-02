@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template Auto-Fill Animation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 500ms;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div class="min-h-screen p-4 flex flex-col items-center justify-center">
+        <div class="max-w-3xl w-full">
+            <div class="text-center mb-4">
+                <h1 class="text-2xl font-bold text-slate-800 mb-1">
+                    Template Auto-Fill
+                </h1>
+            </div>
+
+            <!-- Main Template Container -->
+            <div id="template-container" class="bg-white rounded-lg shadow-lg p-4 mb-4 relative overflow-hidden border-2 border-slate-200">
+                <!-- GenAI Processing Indicator -->
+                <div id="genai-indicator" class="hidden absolute top-2 right-2 flex items-center gap-1 bg-teal-50 px-2 py-1 rounded-full border border-teal-200">
+                    <svg class="w-3 h-3 text-teal-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                    <span class="text-xs text-teal-700 font-medium">GenAI</span>
+                </div>
+
+                <!-- Title Section -->
+                <div id="title-section" class="mb-3 border-2 border-dashed border-slate-300 rounded p-2 min-h-[50px] flex items-center justify-center transition-all">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                        </svg>
+                        <span class="text-xs font-medium">Titel (Text)</span>
+                    </div>
+                </div>
+
+                <!-- Image Section -->
+                <div id="image-section" class="mb-3 border-2 border-dashed border-slate-300 rounded p-2 min-h-[120px] flex items-center justify-center bg-slate-50 transition-all">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Bild (Image)</span>
+                    </div>
+                </div>
+
+                <!-- Lead Section -->
+                <div id="lead-section" class="mb-3 border-2 border-dashed border-slate-300 rounded p-2 min-h-[60px] flex items-center justify-center transition-all">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Lead (Text)</span>
+                    </div>
+                </div>
+
+                <!-- Body Text Section -->
+                <div id="body-section" class="border-2 border-dashed border-slate-300 rounded p-2 min-h-[100px] flex items-center justify-center transition-all">
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Haupttext (Text)</span>
+                    </div>
+                </div>
+
+                <!-- Completion Badge -->
+                <div id="complete-indicator" class="hidden absolute top-2 right-2 flex items-center gap-1 bg-green-50 px-2 py-1 rounded-full border border-green-200">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="text-xs text-green-700 font-medium">Fertig</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex justify-center gap-2 mb-3">
+                <button id="play-pause-btn" class="px-4 py-2 bg-teal-600 text-white rounded text-sm font-medium hover:bg-teal-700 transition-colors">
+                    Pause
+                </button>
+                <button id="reset-btn" class="px-4 py-2 bg-slate-600 text-white rounded text-sm font-medium hover:bg-slate-700 transition-colors">
+                    Reset
+                </button>
+            </div>
+
+            <!-- Progress Indicator -->
+            <div class="bg-white rounded-lg shadow p-3 mb-3">
+                <div class="flex items-center gap-1">
+                    <div class="flex items-center flex-1">
+                        <div id="progress-0" class="h-1.5 rounded-full flex-1 transition-all bg-teal-500"></div>
+                        <div id="dot-0" class="w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300"></div>
+                    </div>
+                    <div class="flex items-center flex-1">
+                        <div id="progress-1" class="h-1.5 rounded-full flex-1 transition-all bg-slate-200"></div>
+                        <div id="dot-1" class="w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300"></div>
+                    </div>
+                    <div class="flex items-center flex-1">
+                        <div id="progress-2" class="h-1.5 rounded-full flex-1 transition-all bg-slate-200"></div>
+                        <div id="dot-2" class="w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300"></div>
+                    </div>
+                    <div class="flex items-center flex-1">
+                        <div id="progress-3" class="h-1.5 rounded-full flex-1 transition-all bg-slate-200"></div>
+                        <div id="dot-3" class="w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300"></div>
+                    </div>
+                    <div class="flex items-center flex-1">
+                        <div id="progress-4" class="h-1.5 rounded-full flex-1 transition-all bg-slate-200"></div>
+                        <div id="dot-4" class="w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300"></div>
+                    </div>
+                    <div class="flex items-center flex-1">
+                        <div id="progress-5" class="h-1.5 rounded-full flex-1 transition-all bg-slate-200"></div>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-1 text-[10px] text-slate-500">
+                    <span>Leer</span>
+                    <span>Titel</span>
+                    <span>Bild</span>
+                    <span>Lead</span>
+                    <span>Body</span>
+                    <span>Fertig</span>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="bg-white rounded-lg shadow p-3">
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="flex items-center gap-1">
+                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                        </svg>
+                        <span class="text-slate-700">Text</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-slate-700">Image</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <svg class="w-3 h-3 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                        <span class="text-slate-700">GenAI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let isPlaying = true;
+        let timer;
+
+        const steps = [
+            { id: 0, name: 'empty' },
+            { id: 1, name: 'title' },
+            { id: 2, name: 'image' },
+            { id: 3, name: 'lead' },
+            { id: 4, name: 'body' },
+            { id: 5, name: 'complete' }
+        ];
+
+        function updateProgress() {
+            for (let i = 0; i <= 5; i++) {
+                const progress = document.getElementById(`progress-${i}`);
+                if (progress) {
+                    progress.className = i <= currentStep 
+                        ? 'h-1.5 rounded-full flex-1 transition-all bg-teal-500'
+                        : 'h-1.5 rounded-full flex-1 transition-all bg-slate-200';
+                }
+                if (i < 5) {
+                    const dot = document.getElementById(`dot-${i}`);
+                    if (dot) {
+                        dot.className = i < currentStep
+                            ? 'w-2 h-2 rounded-full mx-0.5 transition-all bg-teal-500'
+                            : 'w-2 h-2 rounded-full mx-0.5 transition-all bg-slate-300';
+                    }
+                }
+            }
+        }
+
+        function updateDisplay() {
+            const genaiIndicator = document.getElementById('genai-indicator');
+            const completeIndicator = document.getElementById('complete-indicator');
+            const titleSection = document.getElementById('title-section');
+            const imageSection = document.getElementById('image-section');
+            const leadSection = document.getElementById('lead-section');
+            const bodySection = document.getElementById('body-section');
+
+            // Reset indicators
+            genaiIndicator.classList.add('hidden');
+            completeIndicator.classList.add('hidden');
+
+            // Show GenAI indicator during processing
+            if (currentStep > 0 && currentStep < 5) {
+                genaiIndicator.classList.remove('hidden');
+            }
+
+            // Show complete indicator
+            if (currentStep === 5) {
+                completeIndicator.classList.remove('hidden');
+            }
+
+            // Update title
+            if (currentStep === 0) {
+                titleSection.innerHTML = `
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                        </svg>
+                        <span class="text-xs font-medium">Titel (Text)</span>
+                    </div>
+                `;
+            } else {
+                titleSection.innerHTML = `
+                    <h2 class="text-lg font-bold text-slate-800 transition-opacity duration-500 opacity-100">
+                        KI-gestützte Content-Automatisierung
+                    </h2>
+                `;
+            }
+
+            // Update image
+            if (currentStep < 2) {
+                imageSection.innerHTML = `
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Bild (Image)</span>
+                    </div>
+                `;
+            } else {
+                imageSection.innerHTML = `
+                    <div class="w-full h-28 bg-gradient-to-r from-teal-400 to-blue-500 rounded flex items-center justify-center transition-opacity duration-500 opacity-100">
+                        <div class="text-white text-center">
+                            <svg class="w-8 h-8 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                            <p class="text-xs font-medium">AI-Generiertes Bild</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Update lead
+            if (currentStep < 3) {
+                leadSection.innerHTML = `
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Lead (Text)</span>
+                    </div>
+                `;
+            } else {
+                leadSection.innerHTML = `
+                    <p class="text-sm text-slate-700 leading-relaxed transition-opacity duration-500 opacity-100">
+                        Moderne KI-Systeme ermöglichen die Automatisierung redaktioneller Workflows 
+                        bei gleichzeitiger Qualitätssteigerung.
+                    </p>
+                `;
+            }
+
+            // Update body
+            if (currentStep < 4) {
+                bodySection.innerHTML = `
+                    <div class="flex items-center gap-2 text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium">Haupttext (Text)</span>
+                    </div>
+                `;
+            } else {
+                bodySection.innerHTML = `
+                    <div class="text-xs text-slate-600 space-y-2 transition-opacity duration-500 opacity-100">
+                        <p>
+                            Die Automatisierung durch Generative AI ermöglicht effiziente Erstellung 
+                            verschiedener Inhaltstypen – von Nachrichten über Dossiers bis zu Fachpublikationen.
+                        </p>
+                        <p>
+                            Durch strukturierte Content Models und spezialisierte Prompts können verschiedene 
+                            Textbausteine optimal generiert werden.
+                        </p>
+                    </div>
+                `;
+            }
+
+            updateProgress();
+        }
+
+        function nextStep() {
+            currentStep = (currentStep + 1) % steps.length;
+            updateDisplay();
+        }
+
+        function startAnimation() {
+            if (isPlaying) {
+                timer = setTimeout(() => {
+                    nextStep();
+                    startAnimation();
+                }, 1500);
+            }
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('play-pause-btn');
+            btn.textContent = isPlaying ? 'Pause' : 'Play';
+            
+            if (isPlaying) {
+                startAnimation();
+            } else {
+                clearTimeout(timer);
+            }
+        }
+
+        function reset() {
+            clearTimeout(timer);
+            currentStep = 0;
+            isPlaying = true;
+            document.getElementById('play-pause-btn').textContent = 'Pause';
+            updateDisplay();
+            startAnimation();
+        }
+
+        // Event listeners
+        document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
+        document.getElementById('reset-btn').addEventListener('click', reset);
+
+        // Initialize
+        updateDisplay();
+        startAnimation();
+    </script>
+</body>
+</html>
